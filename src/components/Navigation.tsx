@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import CartIcon from "./CartIcon";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/books", label: "Books" },
-  { href: "/records", label: "Records" },
-  { href: "/about", label: "About" },
+  { href: "/ghostwriterpress", label: "Ghost Writer Press" },
+  { href: "/hookwormrecords", label: "Hookworm Records" },
+  { href: "/fineart", label: "Fine Art" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -33,20 +33,24 @@ export default function Navigation() {
                 {link.label}
               </Link>
             ))}
+            <CartIcon />
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2"
-            aria-label="Toggle menu"
-          >
-            <div className="w-6 h-5 flex flex-col justify-between">
-              <span className={`h-0.5 w-full bg-neutral-100 transition-transform ${isOpen ? "rotate-45 translate-y-2" : ""}`} />
-              <span className={`h-0.5 w-full bg-neutral-100 transition-opacity ${isOpen ? "opacity-0" : ""}`} />
-              <span className={`h-0.5 w-full bg-neutral-100 transition-transform ${isOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-            </div>
-          </button>
+          {/* Mobile Menu Button & Cart */}
+          <div className="md:hidden flex items-center gap-2">
+            <CartIcon />
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2"
+              aria-label="Toggle menu"
+            >
+              <div className="w-6 h-5 flex flex-col justify-between">
+                <span className={`h-0.5 w-full bg-neutral-100 transition-transform ${isOpen ? "rotate-45 translate-y-2" : ""}`} />
+                <span className={`h-0.5 w-full bg-neutral-100 transition-opacity ${isOpen ? "opacity-0" : ""}`} />
+                <span className={`h-0.5 w-full bg-neutral-100 transition-transform ${isOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+              </div>
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
