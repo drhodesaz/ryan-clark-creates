@@ -23,7 +23,7 @@ export const products: Product[] = [
     id: "spirits-of-jerome",
     title: "Spirits of Jerome",
     subtitle: "A Journey Through Arizona's Most Haunted Town",
-    price: 24.99,
+    price: 9.99,
     inventory: 10, // Ryan to provide actual count
     category: "book",
     image: "/images/books/sprits.jpg",
@@ -39,7 +39,7 @@ export const products: Product[] = [
     id: "ghost-songs",
     title: "Ghost Songs",
     subtitle: "Celebrating the Phoenix Music Scene",
-    price: 29.99,
+    price: 14.99,
     inventory: 10, // Ryan to provide actual count
     category: "book",
     image: "/images/books/ghostsongs.jpg",
@@ -55,7 +55,7 @@ export const products: Product[] = [
     id: "manifest-destiny",
     title: "ManInfest Destiny",
     subtitle: "A Novella",
-    price: 16.99,
+    price: 9.99,
     inventory: 10, // Ryan to provide actual count
     category: "book",
     image: "/images/books/maninfest1.jpg",
@@ -71,7 +71,7 @@ export const products: Product[] = [
     id: "kindred-spirits",
     title: "Kindred Spirits & Mirrored Souls",
     subtitle: "A Collection of Poetry & Photographs",
-    price: 22.99,
+    price: 14.99,
     inventory: 10, // Ryan to provide actual count
     category: "book",
     image: "/images/books/kindred.jpg",
