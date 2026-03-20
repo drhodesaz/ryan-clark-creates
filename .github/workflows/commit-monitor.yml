@@ -2,12 +2,11 @@ name: Commit Monitor
 
 on:
   push:
-    branches:
-      - "**"
   workflow_dispatch:
 
 permissions:
   contents: read
+  actions: write
 
 jobs:
   monitor-commits:
