@@ -14,7 +14,7 @@ const books = [
     ],
     description: `"All roads lead to Jerome. On your next visit, bring along a copy of Spirits of Jerome as your only companion. It will enhance the experience." — Ken Lamberton, author of Chasing Arizona`,
     details: "Foreword by Stephen Ashbrook",
-    price: "$24.99",
+    price: "$9.99",
     buyLink: "#",
   },
   {
@@ -29,7 +29,7 @@ const books = [
     ],
     description: `"Ryan B. Clark's enthusiasm for the Phoenix music scene cannot be topped. Proof is in this book." — Dani Cutler, KWSS 93.9 FM Phoenix`,
     details: "Foreword by Bob Hoag",
-    price: "$29.99",
+    price: "$14.99",
     buyLink: "#",
   },
   {
@@ -44,7 +44,7 @@ const books = [
     ],
     description: "A gripping novella that explores the intersections of ambition, fate, and the American experience in the modern Southwest.",
     details: "Fiction",
-    price: "$16.99",
+    price: "$9.99",
     buyLink: "#",
   },
   {
@@ -59,7 +59,7 @@ const books = [
     ],
     description: "A collaborative collection blending evocative poetry with striking photography, exploring themes of connection, reflection, and the human spirit.",
     details: "Co-authored with Rhonda Rae Holcombe and Kyle T. Blalock",
-    price: "$22.99",
+    price: "$14.99",
     buyLink: "#",
   },
 ];
