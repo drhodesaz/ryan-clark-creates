@@ -1,0 +1,96 @@
+name: Commit Monitor
+
+on:
+  push:
+    branches:
+      - "**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  monitor-commits:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build commit report
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          event_path = os.environ["GITHUB_EVENT_PATH"]
+          summary_path = os.environ["GITHUB_STEP_SUMMARY"]
+
+          with open(event_path, "r", encoding="utf-8") as f:
+              payload = json.load(f)
+
+          commits = payload.get("commits", [])
+          repo = payload.get("repository", {}).get("full_name", "unknown-repo")
+          ref = payload.get("ref", "unknown-ref")
+          pusher = payload.get("pusher", {}).get("name", "unknown")
+
+          report = {
+              "repository": repo,
+              "ref": ref,
+              "pusher": pusher,
+              "commit_count": len(commits),
+              "commits": [],
+          }
+
+          lines = [
+              "# Commit Monitor",
+              "",
+              f"- Repository: `{repo}`",
+              f"- Ref: `{ref}`",
+              f"- Pusher: `{pusher}`",
+              f"- Commit count: `{len(commits)}`",
+              "",
+          ]
+
+          if commits:
+              lines.extend([
+                  "## Commit Details",
+                  "",
+                  "| SHA | Author | Message | Timestamp |",
+                  "| --- | --- | --- | --- |",
+              ])
+
+              for commit in commits:
+                  cid = commit.get("id", "")[:7]
+                  author = commit.get("author", {}).get("name", "unknown")
+                  message = (commit.get("message", "") or "").replace("\n", " ").strip()
+                  timestamp = commit.get("timestamp", "n/a")
+                  url = commit.get("url", "")
+
+                  report["commits"].append({
+                      "sha": commit.get("id", ""),
+                      "author": author,
+                      "message": message,
+                      "timestamp": timestamp,
+                      "url": url,
+                  })
+
+                  safe_message = message.replace("|", "\\|")
+                  lines.append(f"| `{cid}` | {author} | {safe_message} | {timestamp} |")
+          else:
+              lines.extend([
+                  "## Commit Details",
+                  "",
+                  "No commits were included in this event payload.",
+              ])
+
+          report_path = Path("commit-report.json")
+          report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+          Path(summary_path).write_text("\n".join(lines) + "\n", encoding="utf-8")
+          print("Wrote commit-report.json and workflow summary")
+          PY
+
+      - name: Upload commit report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: commit-report
+          path: commit-report.json
