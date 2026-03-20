@@ -6,25 +6,25 @@ const books = [
     title: "Spirits of Jerome",
     image: "/images/books/sprits.jpg",
     description: "A journey through Arizona's most haunted town",
-    link: "/books#spirits-of-jerome",
+    link: "/ghostwriterpress#spirits-of-jerome",
   },
   {
     title: "Ghost Songs",
     image: "/images/books/ghostsongs.jpg",
     description: "Celebrating the Phoenix music scene",
-    link: "/books#ghost-songs",
+    link: "/ghostwriterpress#ghost-songs",
   },
   {
     title: "ManInfest Destiny",
     image: "/images/books/maninfest1.jpg",
     description: "A novella",
-    link: "/books#manifest-destiny",
+    link: "/ghostwriterpress#manifest-destiny",
   },
   {
     title: "Kindred Spirits & Mirrored Souls",
     image: "/images/books/kindred.jpg",
     description: "Poetry & photographs",
-    link: "/books#kindred-spirits",
+    link: "/ghostwriterpress#kindred-spirits",
   },
 ];
 
@@ -33,13 +33,13 @@ const records = [
     title: "Hookworm ONE",
     image: "/images/records/HWR_Hookworm1_07172021_v2-01.jpg",
     artists: "The Woodworks, Paper Foxes, Shovel, The Psychedelephants",
-    link: "/records#hookworm-one",
+    link: "/hookwormrecords#hookworm-one",
   },
   {
     title: "Hookworm TWO",
     image: "/images/records/jacketv5.jpg",
     artists: "Fairy Bones, Chrome Rhino, Birds and Arrows & more",
-    link: "/records#hookworm-two",
+    link: "/hookwormrecords#hookworm-two",
   },
 ];
 
@@ -70,13 +70,13 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/books"
+              href="/ghostwriterpress"
               className="px-8 py-4 bg-amber-500 text-neutral-950 font-semibold rounded-full hover:bg-amber-400 transition-colors"
             >
               Explore Books
             </Link>
             <Link
-              href="/records"
+              href="/hookwormrecords"
               className="px-8 py-4 border border-neutral-600 text-neutral-100 font-semibold rounded-full hover:border-amber-500 hover:text-amber-500 transition-colors"
             >
               Hookworm Records
@@ -99,7 +99,7 @@ export default function Home() {
               <h2 className="font-playfair text-4xl md:text-5xl font-bold mt-2">Books</h2>
             </div>
             <Link
-              href="/books"
+              href="/ghostwriterpress"
               className="hidden sm:flex items-center gap-2 text-neutral-400 hover:text-amber-500 transition-colors"
             >
               View All
@@ -130,7 +130,7 @@ export default function Home() {
 
           <div className="mt-8 text-center sm:hidden">
             <Link
-              href="/books"
+              href="/ghostwriterpress"
               className="inline-flex items-center gap-2 text-amber-500"
             >
               View All Books
@@ -151,7 +151,7 @@ export default function Home() {
               <h2 className="font-playfair text-4xl md:text-5xl font-bold mt-2">Hookworm Records</h2>
             </div>
             <Link
-              href="/records"
+              href="/hookwormrecords"
               className="hidden sm:flex items-center gap-2 text-neutral-400 hover:text-amber-500 transition-colors"
             >
               View All
@@ -219,10 +219,10 @@ export default function Home() {
                 community through carefully curated vinyl compilations.
               </p>
               <Link
-                href="/about"
+                href="/contact"
                 className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-400 transition-colors"
               >
-                Learn More
+                Get in Touch
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -232,8 +232,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contact CTA */}
+      {/* Fine Art Teaser */}
       <section className="py-24 px-6 bg-neutral-950">
+        <div className="max-w-3xl mx-auto text-center">
+          <span className="text-amber-500 text-sm uppercase tracking-widest">Coming Soon</span>
+          <h2 className="font-playfair text-4xl md:text-5xl font-bold mt-2 mb-6">
+            Fine Art
+          </h2>
+          <p className="text-neutral-400 text-lg mb-8">
+            Original artwork and limited edition prints. Be the first to know when the collection launches.
+          </p>
+          <Link
+            href="/fineart"
+            className="inline-flex px-8 py-4 border border-neutral-600 text-neutral-100 font-semibold rounded-full hover:border-amber-500 hover:text-amber-500 transition-colors"
+          >
+            Learn More
+          </Link>
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="py-24 px-6 bg-neutral-900">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6">
             Let&apos;s Work Together
