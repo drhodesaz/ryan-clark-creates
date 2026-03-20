@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, useRef, ReactNode } from "react";
 import { Product, getProduct } from "@/data/products";
 
 export interface CartItem {
@@ -23,29 +23,28 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const CART_STORAGE_KEY = "ryan-clark-creates-cart";
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  // Load cart from localStorage on mount
-  useEffect(() => {
+function getInitialCart(): CartItem[] {
+  if (typeof window === "undefined") return [];
+  try {
     const stored = localStorage.getItem(CART_STORAGE_KEY);
-    if (stored) {
-      try {
-        setItems(JSON.parse(stored));
-      } catch {
-        // Invalid JSON, ignore
-      }
-    }
-    setIsHydrated(true);
-  }, []);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
 
-  // Save cart to localStorage whenever it changes
+export function CartProvider({ children }: { children: ReactNode }) {
+  const [items, setItems] = useState<CartItem[]>(getInitialCart);
+  const isInitialMount = useRef(true);
+
+  // Save cart to localStorage whenever it changes (skip initial mount)
   useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
     }
-  }, [items, isHydrated]);
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  }, [items]);
 
   const addToCart = (productId: string) => {
     const product = getProduct(productId);
