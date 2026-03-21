@@ -1,16 +1,18 @@
 import Stripe from "stripe";
 
-// Stripe instance - will be null during build if env vars aren't set
-export const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: "2026-01-28.clover",
-      typescript: true,
-    })
-  : null;
+// Stripe instance - initialized lazily to ensure env vars are available
+let stripeInstance: Stripe | null = null;
 
 export function getStripe(): Stripe {
-  if (!stripe) {
+  if (!process.env.STRIPE_SECRET_KEY) {
     throw new Error("STRIPE_SECRET_KEY is not set in environment variables");
   }
-  return stripe;
+
+  if (!stripeInstance) {
+    stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      typescript: true,
+    });
+  }
+
+  return stripeInstance;
 }
