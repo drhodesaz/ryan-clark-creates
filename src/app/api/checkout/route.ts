@@ -49,13 +49,16 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://ryanclarkcreates.com";
+      const imageUrl = product.image ? `${baseUrl}${product.image}` : undefined;
+
       lineItems.push({
         price_data: {
           currency: "usd",
           product_data: {
             name: product.title,
             description: product.subtitle || undefined,
-            images: product.image ? [`${process.env.NEXT_PUBLIC_BASE_URL || ""}${product.image}`] : undefined,
+            ...(imageUrl && { images: [imageUrl] }),
           },
           unit_amount: Math.round(product.price * 100), // Convert to cents
         },
