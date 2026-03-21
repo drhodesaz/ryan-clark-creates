@@ -73,6 +73,25 @@ export async function POST(request: NextRequest) {
       metadata: {
         items: JSON.stringify(items),
       },
+      shipping_address_collection: {
+        allowed_countries: ["US"],
+      },
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: "fixed_amount",
+            fixed_amount: { amount: 500, currency: "usd" },
+            display_name: "Standard Shipping (5-10 business days)",
+          },
+        },
+        {
+          shipping_rate_data: {
+            type: "fixed_amount",
+            fixed_amount: { amount: 1500, currency: "usd" },
+            display_name: "Express Shipping (2-3 business days)",
+          },
+        },
+      ],
     });
 
     return NextResponse.json({ sessionId: session.id, url: session.url });
