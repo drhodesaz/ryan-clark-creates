@@ -213,20 +213,20 @@ export default function ContactPage() {
                   Instagram
                 </a>
                 <a
-                  href={siteConfig.social.twitter}
+                  href={siteConfig.social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-amber-500 hover:text-amber-400 transition-colors"
                 >
-                  Twitter
+                  Facebook
                 </a>
                 <a
-                  href={siteConfig.social.bandcamp}
+                  href={siteConfig.social.bluesky}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-amber-500 hover:text-amber-400 transition-colors"
                 >
-                  Bandcamp
+                  Bluesky
                 </a>
               </div>
             </div>
