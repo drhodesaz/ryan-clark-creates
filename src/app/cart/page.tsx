@@ -119,7 +119,7 @@ export default function CartPage() {
                     src={product.image}
                     alt={product.title}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
 

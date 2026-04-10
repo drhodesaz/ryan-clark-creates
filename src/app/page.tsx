@@ -31,7 +31,7 @@ const books = [
 const records = [
   {
     title: "Hookworm ONE",
-    image: "/images/records/HWR_Hookworm1_07172021_v2-01.jpg",
+    image: "/images/records/HWR_Hookworm1_07172021_v2-02.jpg",
     artists: "The Woodworks, Paper Foxes, Shovel, The Psychedelephants",
     link: "/hookwormrecords#hookworm-one",
   },
@@ -40,6 +40,12 @@ const records = [
     image: "/images/records/jacketv5.jpg",
     artists: "Fairy Bones, Chrome Rhino, Birds and Arrows & more",
     link: "/hookwormrecords#hookworm-two",
+  },
+  {
+    title: "Electric Bones",
+    image: "/images/records/electric-bones-front.jpg",
+    artists: "Birds & Arrows",
+    link: "/hookwormrecords#electric-bones",
   },
 ];
 
@@ -54,7 +60,7 @@ export default function Home() {
             src="/images/photos/RyanClark(1).jpg"
             alt="Ryan Clark"
             fill
-            className="object-cover object-top"
+            className="object-contain object-top"
             priority
           />
         </div>
@@ -63,7 +69,7 @@ export default function Home() {
             Ryan Clark <span className="text-amber-500">Creates</span>
           </h1>
           <p className="text-xl md:text-2xl text-neutral-300 mb-8 max-w-2xl mx-auto">
-            Books. Records. Art. Photography.
+            Books. Records. Art.
           </p>
           <p className="text-lg text-neutral-400 mb-12 max-w-xl mx-auto">
             Documenting the stories, sounds, and spirits of the Southwest through words, music, and images.
@@ -73,7 +79,7 @@ export default function Home() {
               href="/ghostwriterpress"
               className="px-8 py-4 bg-amber-500 text-neutral-950 font-semibold rounded-full hover:bg-amber-400 transition-colors"
             >
-              Explore Books
+              Ghost Writer Press
             </Link>
             <Link
               href="/hookwormrecords"
@@ -117,7 +123,7 @@ export default function Home() {
                     src={book.image}
                     alt={book.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-contain group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <h3 className="font-playfair text-xl font-semibold group-hover:text-amber-500 transition-colors">
@@ -169,7 +175,7 @@ export default function Home() {
                     src={record.image}
                     alt={record.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-contain group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <h3 className="font-playfair text-2xl font-semibold group-hover:text-amber-500 transition-colors">
@@ -201,7 +207,7 @@ export default function Home() {
                 src="/images/photos/RyanClark(1).jpg"
                 alt="Ryan Clark"
                 fill
-                className="object-cover"
+                className="object-contain"
               />
             </div>
             <div>

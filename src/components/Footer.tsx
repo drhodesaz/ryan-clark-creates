@@ -69,22 +69,22 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={siteConfig.social.twitter}
+                  href={siteConfig.social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-neutral-400 hover:text-amber-500 transition-colors"
                 >
-                  Twitter
+                  Facebook
                 </a>
               </li>
               <li>
                 <a
-                  href={siteConfig.social.bandcamp}
+                  href={siteConfig.social.bluesky}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-neutral-400 hover:text-amber-500 transition-colors"
                 >
-                  Bandcamp
+                  Bluesky
                 </a>
               </li>
             </ul>

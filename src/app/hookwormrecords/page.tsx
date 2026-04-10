@@ -1,10 +1,89 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getRecords } from "@/data/products";
+import { getRecords, Product } from "@/data/products";
 import AddToCartButton from "@/components/AddToCartButton";
 import InventoryBadge from "@/components/InventoryBadge";
+import ImageCarousel from "@/components/ImageCarousel";
+
+function FlippableRecordCover({ record }: { record: Product }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleClick = () => {
+    if (record.altImage) {
+      setIsFlipped(!isFlipped);
+    }
+  };
+
+  return (
+    <div className="relative group">
+      <div
+        onClick={handleClick}
+        className={`relative aspect-square rounded-lg overflow-visible bg-neutral-800 shadow-2xl cursor-pointer ${
+          record.altImage ? "hover:shadow-amber-500/20" : ""
+        }`}
+        style={{ perspective: "1000px" }}
+      >
+        <div
+          className="relative w-full h-full transition-transform duration-700"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
+          }}
+        >
+          {/* Front Cover */}
+          <div
+            className="absolute inset-0 rounded-lg overflow-hidden"
+            style={{ backfaceVisibility: "hidden" }}
+          >
+            <Image
+              src={record.image}
+              alt={`${record.title} front cover`}
+              fill
+              className="object-contain"
+            />
+          </div>
+
+          {/* Back Cover */}
+          {record.altImage && (
+            <div
+              className="absolute inset-0 rounded-lg overflow-hidden"
+              style={{
+                backfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
+              }}
+            >
+              <Image
+                src={record.altImage}
+                alt={`${record.title} back cover`}
+                fill
+                className="object-contain"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Click indicator */}
+        {record.altImage && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
+            <span className="px-3 py-1 bg-neutral-900/80 backdrop-blur-sm text-amber-500 text-sm font-mono rounded-full border border-amber-500/30">
+              &laquo; click &raquo;
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Vinyl peeking out effect */}
+      <div className="absolute top-1/2 -right-4 w-[90%] aspect-square rounded-full bg-neutral-800 -translate-y-1/2 -z-10 opacity-80">
+        <div className="absolute inset-0 rounded-full border-4 border-neutral-700" />
+        <div className="absolute inset-[30%] rounded-full bg-amber-500/20" />
+        <div className="absolute inset-[45%] rounded-full bg-neutral-900" />
+      </div>
+    </div>
+  );
+}
 
 export default function HookwormRecordsPage() {
   const records = getRecords();
@@ -42,34 +121,13 @@ export default function HookwormRecordsPage() {
         <div className="max-w-7xl mx-auto space-y-32">
           {records.map((record) => (
             <article key={record.id} id={record.id} className="scroll-mt-24">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {/* Album Art */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                {/* Album Art - Carousel if gallery exists, otherwise flippable cover */}
                 <div className="space-y-6">
-                  <div className="relative group">
-                    <div className="relative aspect-square rounded-lg overflow-hidden bg-neutral-800 shadow-2xl">
-                      <Image
-                        src={record.image}
-                        alt={`${record.title} front cover`}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    {/* Vinyl peeking out effect */}
-                    <div className="absolute top-1/2 -right-4 w-[90%] aspect-square rounded-full bg-neutral-800 -translate-y-1/2 -z-10 opacity-80">
-                      <div className="absolute inset-0 rounded-full border-4 border-neutral-700" />
-                      <div className="absolute inset-[30%] rounded-full bg-amber-500/20" />
-                      <div className="absolute inset-[45%] rounded-full bg-neutral-900" />
-                    </div>
-                  </div>
-                  {record.altImage && (
-                    <div className="relative aspect-[2/1] rounded-lg overflow-hidden bg-neutral-800">
-                      <Image
-                        src={record.altImage}
-                        alt={`${record.title} back cover`}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+                  {record.gallery && record.gallery.length > 0 ? (
+                    <ImageCarousel images={record.gallery} title={record.title} inline />
+                  ) : (
+                    <FlippableRecordCover record={record} />
                   )}
                 </div>
 
@@ -78,9 +136,12 @@ export default function HookwormRecordsPage() {
                   {record.year && (
                     <span className="text-amber-500 text-sm uppercase tracking-widest">{record.year}</span>
                   )}
-                  <h2 className="font-playfair text-4xl md:text-5xl font-bold mt-2 mb-6">
+                  <h2 className="font-playfair text-4xl md:text-5xl font-bold mt-2 mb-2">
                     {record.title}
                   </h2>
+                  {record.subtitle && (
+                    <p className="text-neutral-400 text-xl mb-6">{record.subtitle}</p>
+                  )}
                   <p className="text-neutral-300 text-lg leading-relaxed mb-8">
                     {record.description}
                   </p>
@@ -110,6 +171,10 @@ export default function HookwormRecordsPage() {
                     <p className="text-neutral-500 text-sm mb-8">{record.credits}</p>
                   )}
 
+                  {record.details && (
+                    <p className="text-amber-500 text-sm font-semibold mb-4">{record.details}</p>
+                  )}
+
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
                     <span className="text-2xl font-bold text-amber-500">
                       ${record.price.toFixed(2)}
@@ -119,30 +184,24 @@ export default function HookwormRecordsPage() {
                   <InventoryBadge inventory={record.inventory} />
                 </div>
               </div>
-
-              {/* Gallery Section */}
-              {record.gallery && record.gallery.length > 0 && (
-                <div className="mt-16">
-                  <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-6">Gallery</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {record.gallery.map((image, idx) => (
-                      <div
-                        key={idx}
-                        className="relative aspect-square rounded-lg overflow-hidden bg-neutral-800 group cursor-pointer"
-                      >
-                        <Image
-                          src={image}
-                          alt={`${record.title} gallery image ${idx + 1}`}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </article>
           ))}
+        </div>
+      </section>
+
+      {/* Shipping Info */}
+      <section className="py-12 px-6 bg-neutral-800">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+            <div className="p-6 rounded-lg bg-neutral-900">
+              <h3 className="text-amber-500 font-semibold mb-2">Free Shipping</h3>
+              <p className="text-neutral-300">Orders over $40.00 in the lower 48 states</p>
+            </div>
+            <div className="p-6 rounded-lg bg-neutral-900">
+              <h3 className="text-amber-500 font-semibold mb-2">Shipping</h3>
+              <p className="text-neutral-300">United States & Canada only — $10.00</p>
+            </div>
+          </div>
         </div>
       </section>
 
