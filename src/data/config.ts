@@ -12,8 +12,8 @@ export const siteConfig = {
   // Social links
   social: {
     instagram: 'https://instagram.com/ryanclarkcreates',
-    twitter: 'https://twitter.com/ryanclarkcreates',
-    bandcamp: 'https://hookwormrecords.bandcamp.com',
+    facebook: 'https://facebook.com/ryanclarkcreates',
+    bluesky: 'https://bsky.app/profile/ryanclarkcreates.bsky.social',
   },
 
   // Fine art page status

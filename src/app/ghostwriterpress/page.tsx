@@ -1,10 +1,81 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getBooks } from "@/data/products";
+import { getBooks, Product } from "@/data/products";
 import AddToCartButton from "@/components/AddToCartButton";
 import InventoryBadge from "@/components/InventoryBadge";
+
+function FlippableBookCover({ book }: { book: Product }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleClick = () => {
+    if (book.altImage) {
+      setIsFlipped(!isFlipped);
+    }
+  };
+
+  return (
+    <div className="relative group">
+      <div
+        onClick={handleClick}
+        className={`relative aspect-[3/4] rounded-lg overflow-visible bg-neutral-800 shadow-2xl cursor-pointer ${
+          book.altImage ? "hover:shadow-amber-500/20" : ""
+        }`}
+        style={{ perspective: "1000px" }}
+      >
+        <div
+          className="relative w-full h-full transition-transform duration-700"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
+          }}
+        >
+          {/* Front Cover */}
+          <div
+            className="absolute inset-0 rounded-lg overflow-hidden"
+            style={{ backfaceVisibility: "hidden" }}
+          >
+            <Image
+              src={book.image}
+              alt={book.title}
+              fill
+              className="object-contain"
+            />
+          </div>
+
+          {/* Back Cover */}
+          {book.altImage && (
+            <div
+              className="absolute inset-0 rounded-lg overflow-hidden"
+              style={{
+                backfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
+              }}
+            >
+              <Image
+                src={book.altImage}
+                alt={`${book.title} back cover`}
+                fill
+                className="object-contain"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Click indicator */}
+        {book.altImage && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
+            <span className="px-3 py-1 bg-neutral-900/80 backdrop-blur-sm text-amber-500 text-sm font-mono rounded-full border border-amber-500/30">
+              &laquo; click &raquo;
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function GhostWriterPressPage() {
   const books = getBooks();
@@ -47,27 +118,7 @@ export default function GhostWriterPressPage() {
               }`}
             >
               <div className={`${index % 2 === 1 ? "lg:order-2" : ""}`}>
-                <div className="relative group">
-                  <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-neutral-800 shadow-2xl">
-                    <Image
-                      src={book.image}
-                      alt={book.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  {/* Decorative second cover */}
-                  {book.altImage && (
-                    <div className="absolute -bottom-4 -right-4 w-1/2 aspect-[3/4] rounded-lg overflow-hidden bg-neutral-800 shadow-xl opacity-50 -z-10">
-                      <Image
-                        src={book.altImage}
-                        alt={`${book.title} back cover`}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
-                </div>
+                <FlippableBookCover book={book} />
               </div>
 
               <div className={`${index % 2 === 1 ? "lg:order-1" : ""}`}>
@@ -94,27 +145,6 @@ export default function GhostWriterPressPage() {
                 <InventoryBadge inventory={book.inventory} />
               </div>
 
-              {/* Gallery Section */}
-              {book.gallery && book.gallery.length > 0 && (
-                <div className="lg:col-span-2 mt-8">
-                  <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-6">Inside Pages</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {book.gallery.map((image, idx) => (
-                      <div
-                        key={idx}
-                        className="relative aspect-[3/4] rounded-lg overflow-hidden bg-neutral-800 group cursor-pointer"
-                      >
-                        <Image
-                          src={image}
-                          alt={`${book.title} page ${idx + 1}`}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </article>
           ))}
         </div>

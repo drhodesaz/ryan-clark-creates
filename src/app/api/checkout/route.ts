@@ -55,7 +55,6 @@ export async function POST(request: NextRequest) {
           product_data: {
             name: product.title,
             description: product.subtitle || undefined,
-            images: product.image ? [`${process.env.NEXT_PUBLIC_BASE_URL || ""}${product.image}`] : undefined,
           },
           unit_amount: Math.round(product.price * 100), // Convert to cents
         },
@@ -69,8 +68,8 @@ export async function POST(request: NextRequest) {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || request.headers.get("origin")}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || request.headers.get("origin")}/cart`,
+      success_url: "https://ryanclarkcreates.com/checkout/success?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: "https://ryanclarkcreates.com/cart",
       metadata: {
         items: JSON.stringify(items),
       },
@@ -81,41 +80,15 @@ export async function POST(request: NextRequest) {
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            fixed_amount: {
-              amount: 500, // $5.00 flat rate
-              currency: "usd",
-            },
-            display_name: "Standard Shipping",
-            delivery_estimate: {
-              minimum: {
-                unit: "business_day",
-                value: 5,
-              },
-              maximum: {
-                unit: "business_day",
-                value: 10,
-              },
-            },
+            fixed_amount: { amount: 500, currency: "usd" },
+            display_name: "Standard Shipping (5-10 business days)",
           },
         },
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            fixed_amount: {
-              amount: 1500, // $15.00 express
-              currency: "usd",
-            },
-            display_name: "Express Shipping",
-            delivery_estimate: {
-              minimum: {
-                unit: "business_day",
-                value: 2,
-              },
-              maximum: {
-                unit: "business_day",
-                value: 3,
-              },
-            },
+            fixed_amount: { amount: 1500, currency: "usd" },
+            display_name: "Express Shipping (2-3 business days)",
           },
         },
       ],
@@ -124,8 +97,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ sessionId: session.id, url: session.url });
   } catch (error) {
     console.error("Checkout error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to create checkout session" },
+      { error: "Failed to create checkout session", details: message },
       { status: 500 }
     );
   }
